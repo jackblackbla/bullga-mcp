@@ -31,11 +31,65 @@ Use it when an AI agent needs to look up Korean listed companies, stocks, disclo
 
 Bullga MCP is not a real-time trading feed. Market data is generally delayed by 30 minutes unless a tool or upstream source states otherwise. Treat outputs as research and workflow context, not execution-grade market data.
 
+## Use With AI Agents
+
+The main advantage of Bullga MCP is that the data layer is already agent-ready. MCP-compatible agents can call Bullga directly from the environment where analysis and code work happen, including Codex, Claude Code, Claude Desktop, and Cursor.
+
+There is no custom SDK, scraper, or one-off API wrapper to write first. Paste the endpoint into your MCP client, then ask the agent to call tools such as `list_companies`, `get_stock_prices`, `list_disclosures`, or `wiki_query`.
+
 ## Connect
 
 No local server install is required. Add the hosted endpoint to any MCP client that supports Streamable HTTP.
 
+### Codex
+
+```bash
+codex mcp add bullga --url https://mcp.bullga.ai/mcp
+```
+
+Verify it was added:
+
+```bash
+codex mcp list
+```
+
+### Claude Code
+
+```bash
+claude mcp add --transport http bullga https://mcp.bullga.ai/mcp
+```
+
+Then run `/mcp` inside Claude Code to confirm the server is connected and tools are available.
+
 ### Claude Desktop
+
+#### One-Prompt Setup
+
+Copy the prompt below into Claude Desktop. It contains the exact config edit needed to add Bullga MCP.
+
+```text
+Add the Bullga MCP server to my Claude Desktop configuration.
+
+Edit the file claude_desktop_config.json:
+- macOS: ~/Library/Application Support/Claude/claude_desktop_config.json
+- Windows: %APPDATA%\Claude\claude_desktop_config.json
+
+Add this MCP server entry. If the file already exists with other mcpServers, merge this in without removing existing entries:
+
+{
+  "mcpServers": {
+    "bullga": {
+      "url": "https://mcp.bullga.ai/mcp"
+    }
+  }
+}
+
+After editing, tell me to restart Claude Desktop for the changes to take effect.
+```
+
+Restart Claude Desktop after the config is updated. The Bullga tools will appear automatically in your next conversation.
+
+#### Manual Setup
 
 Add Bullga under `mcpServers` in your Claude Desktop config:
 
