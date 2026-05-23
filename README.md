@@ -9,10 +9,8 @@
 </p>
 
 <p align="center">
-  <img alt="MCP" src="https://img.shields.io/badge/MCP-Streamable%20HTTP-2f6fed">
-  <img alt="Tools" src="https://img.shields.io/badge/tools-47-20a67a">
-  <img alt="Domains" src="https://img.shields.io/badge/domains-15-6f42c1">
-  <img alt="Auth" src="https://img.shields.io/badge/auth-watchlists%20only-f59e0b">
+  <a href="https://docs.bullga.ai/docs/intro">English</a> ·
+  <a href="https://docs.bullga.ai/ko/docs/intro">한국어</a>
 </p>
 
 **Endpoint:** `https://mcp.bullga.ai/mcp`
