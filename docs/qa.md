@@ -51,6 +51,7 @@ Operational follow-up from the QA run:
 - Redis broker/cache headroom was raised for launch traffic.
 - A pre-launch duplicate NLP summary backlog was purged from the transient Celery `nlp` queue.
 - `scan_unsummarized_news` is now capped, deduplicated, and dispatches expiring child summary tasks so the queue cannot refill unboundedly.
+- Post-fix monitoring stayed healthy for 30+ minutes after restart: Redis restart count did not increase, memory stayed around `33.7M / 5.08G`, and `nlp_llen` returned to `0`.
 
 ## Runbook
 
