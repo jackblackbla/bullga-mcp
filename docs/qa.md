@@ -2,16 +2,11 @@
 
 Last synced: **2026-05-23**.
 
-Bullga MCP includes a fixed-case QA harness that checks whether agents select the right evidence tools for Korean finance questions. The purpose is not just connectivity; it catches reasoning regressions such as answering an ownership question without calling `get_ownership`.
+Bullga MCP uses fixed Korean finance QA cases to check whether agents select the right evidence tools for a user's intent. The goal is to catch reasoning regressions, not just connectivity failures.
 
-## Fixed Case Files
+## What Each Case Defines
 
-The backend stores fixed regression cases under `backend-main/webapp/mcp_server/qa_cases/`:
-
-- `agent_tool_calling_v1.yaml` — canonical Korean finance user-question cases.
-- `company_pool_v1.yaml` — reusable company groups and codes.
-
-Each case defines:
+Each QA case includes:
 
 - a stable ID and category,
 - a Korean question template,
@@ -33,49 +28,15 @@ Each case defines:
 | `financial_risk` | Use derived indicators, statement values, or detailed statements for company-specific financial claims. |
 | `gap_detection` | Demonstrate Bullga's structured synthesis against direct disclosure lookup, and state gaps honestly. |
 
+## Expected Agent Behavior
 
-## Launch QA Snapshot
+Agents should:
 
-Manual public-open QA was run against `https://mcp.bullga.ai/mcp` on **2026-05-23 KST** with a temporary Free MCP API key.
-
-| Result | Count |
-| --- | ---: |
-| PASS | 9 |
-| PASS_WITH_CAVEAT | 1 |
-| FAIL | 0 |
-
-Covered prompts included company profile, ownership, catalyst, financial risk, product/value-chain, disclosures, news-filter quality, theme-role distinction, authenticated watchlist flow, and Pro-only wiki access guard. The only caveat was a no-data news-filter case for `부산산업`; post-fix live resmoke confirmed no Redis `maxmemory` errors and no unrelated location-news results.
-
-Operational follow-up from the QA run:
-
-- Redis broker/cache headroom was raised for launch traffic.
-- A pre-launch duplicate NLP summary backlog was purged from the transient Celery `nlp` queue.
-- `scan_unsummarized_news` is now capped, deduplicated, and dispatches expiring child summary tasks so the queue cannot refill unboundedly.
-- Post-fix monitoring stayed healthy for 30+ minutes after restart: Redis restart count did not increase, memory stayed around `33.7M / 5.08G`, and `nlp_llen` returned to `0`.
-
-## Runbook
-
-Dry-run fixed cases inside the backend container:
-
-```bash
-docker compose exec -T webapp python manage.py mcp_qa \
-  --case-file mcp_server/qa_cases/agent_tool_calling_v1.yaml \
-  --company-pool-file mcp_server/qa_cases/company_pool_v1.yaml \
-  --case-limit 10 \
-  --company-limit 3 \
-  --dry-run
-```
-
-Run against the hosted endpoint with a direct MCP API key:
-
-```bash
-MCP_QA_API_KEY=bg_mcp_xxx docker compose exec -T webapp python manage.py mcp_qa \
-  --mcp-url https://mcp.bullga.ai/mcp \
-  --case-file mcp_server/qa_cases/agent_tool_calling_v1.yaml \
-  --company-pool-file mcp_server/qa_cases/company_pool_v1.yaml
-```
-
-The harness injects the key as `Authorization: Bearer bg_mcp_xxx` in the generated Claude MCP config.
+- use the narrow evidence tool for the user's question,
+- treat lookup tools as helpers rather than final evidence,
+- verify market-move claims with price data before citing possible catalysts,
+- state uncertainty when Bullga data does not support a claim,
+- avoid overclaiming direct exposure from theme membership or indirect value-chain links.
 
 ## Known Failure Patterns
 
@@ -83,7 +44,7 @@ The harness injects the key as `Authorization: Bearer bg_mcp_xxx` in the generat
 - News-only catalyst: the agent cites news without verifying price movement.
 - Theme overreach: the agent treats theme membership as a direct business relationship.
 - Manufacturing overclaim: the agent calls a distributor or materials company a direct manufacturer.
-- Runtime/tool-result failure: the right tool was selected but backend/DNS/API failure prevented answer completion.
+- Tool-result failure: the right tool was selected but the answer does not preserve the error or uncertainty.
 
 ## Current Guardrails
 

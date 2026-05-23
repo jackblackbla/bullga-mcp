@@ -12,7 +12,7 @@ Bullga MCP resolves the caller in this order:
 2. **Personal MCP API key** from `X-API-Key: bg_mcp_xxx`.
 3. **JWT session auth** stored by the `authenticate` tool for the current MCP session.
 4. **Anonymous session** identified by the MCP session/client headers.
-5. **Anonymous host fallback** when no session ID is available.
+5. **Anonymous caller identity** when no session ID is available.
 
 API keys are hashed server-side, start with `bg_mcp_`, track `lastUsedAt`, and can expire or be deactivated.
 
@@ -36,7 +36,7 @@ The server resolves the session ID from client/session metadata or the `mcp-sess
 | Pro | 1,000 | 20,000 | Yes |
 | Enterprise | Configurable, default unlimited | Configurable, default unlimited | Yes |
 
-Environment settings may override these defaults in production.
+These are the current public defaults. Enterprise limits can be configured per account.
 
 ## Credit Weights
 

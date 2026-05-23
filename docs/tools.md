@@ -1,8 +1,8 @@
 # Bullga MCP Tool Surface
 
-Last synced: **2026-05-23** from FastMCP registration in `jackblackbla/joah`.
+Last synced: **2026-05-23**.
 
-Bullga MCP currently exposes **44 registered tools across 15 domains**. This list intentionally includes only tools registered into the hosted MCP surface; internal helpers and unregistered implementation functions are omitted.
+Bullga MCP currently exposes **44 hosted tools across 15 domains**. This page lists the public MCP tool surface available at `https://mcp.bullga.ai/mcp`.
 
 | Domain | Registered tools and access | Notes |
 | --- | --- | --- |
