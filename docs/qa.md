@@ -38,13 +38,21 @@ Each case defines:
 Dry-run fixed cases inside the backend container:
 
 ```bash
-docker compose exec -T webapp python manage.py mcp_qa   --case-file mcp_server/qa_cases/agent_tool_calling_v1.yaml   --company-pool-file mcp_server/qa_cases/company_pool_v1.yaml   --case-limit 10   --company-limit 3   --dry-run
+docker compose exec -T webapp python manage.py mcp_qa \
+  --case-file mcp_server/qa_cases/agent_tool_calling_v1.yaml \
+  --company-pool-file mcp_server/qa_cases/company_pool_v1.yaml \
+  --case-limit 10 \
+  --company-limit 3 \
+  --dry-run
 ```
 
 Run against the hosted endpoint with a direct MCP API key:
 
 ```bash
-MCP_QA_API_KEY=bg_mcp_xxx docker compose exec -T webapp python manage.py mcp_qa   --mcp-url https://mcp.bullga.ai/mcp   --case-file mcp_server/qa_cases/agent_tool_calling_v1.yaml   --company-pool-file mcp_server/qa_cases/company_pool_v1.yaml
+MCP_QA_API_KEY=bg_mcp_xxx docker compose exec -T webapp python manage.py mcp_qa \
+  --mcp-url https://mcp.bullga.ai/mcp \
+  --case-file mcp_server/qa_cases/agent_tool_calling_v1.yaml \
+  --company-pool-file mcp_server/qa_cases/company_pool_v1.yaml
 ```
 
 The harness injects the key as `Authorization: Bearer bg_mcp_xxx` in the generated Claude MCP config.
