@@ -5,7 +5,7 @@
 </p>
 
 <p align="center">
-  Korean financial market data for MCP-compatible agents.
+  AI-native access to structured and unstructured Korean financial market data.
 </p>
 
 <p align="center">
@@ -21,9 +21,15 @@
 
 ## What It Is
 
-Bullga MCP is a hosted Model Context Protocol server that exposes Korean financial market data through a standardized tool interface. It runs over Streamable HTTP at `/mcp`, returns structured JSON payloads, and maps MCP tools to Bullga backend REST API endpoints.
+Bullga MCP is a hosted Model Context Protocol server built for AI-native financial workflows. It exposes both structured datasets, such as companies, prices, disclosures, financial statements, ownership, and trading activity, and unstructured source material, such as disclosure bodies, news, stock wiki pages, and file-backed LLM wiki content.
+
+It runs over Streamable HTTP at `/mcp`, returns structured JSON payloads, and maps MCP tools to Bullga backend REST API endpoints.
 
 Use it when an AI agent needs to look up Korean listed companies, stocks, disclosures, financial statements, investor trading, short selling, themes, watchlists, or Bullga wiki content without building a custom API integration.
+
+## Data Freshness
+
+Bullga MCP is not a real-time trading feed. Market data is generally delayed by 30 minutes unless a tool or upstream source states otherwise. Treat outputs as research and workflow context, not execution-grade market data.
 
 ## Connect
 
