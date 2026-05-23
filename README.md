@@ -31,6 +31,7 @@ Last synced: **2026-05-23** from the Bullga backend MCP registration list.
 - Watchlist tools require an authenticated Bullga user session or API key.
 - Wiki write/admin tools (`wiki_ingest`, `wiki_file_answer`) require a Pro-or-higher authenticated user.
 - The agent QA harness now uses fixed Korean finance cases so tool selection regressions are caught before release.
+- Launch manual agent QA on 2026-05-23 KST passed 10/10 executed prompts (9 PASS, 1 PASS_WITH_CAVEAT, 0 FAIL) against the hosted endpoint.
 
 Recent quality updates reflected in this documentation:
 

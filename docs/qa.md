@@ -33,6 +33,25 @@ Each case defines:
 | `financial_risk` | Use derived indicators, statement values, or detailed statements for company-specific financial claims. |
 | `gap_detection` | Demonstrate Bullga's structured synthesis against direct disclosure lookup, and state gaps honestly. |
 
+
+## Launch QA Snapshot
+
+Manual public-open QA was run against `https://mcp.bullga.ai/mcp` on **2026-05-23 KST** with a temporary Free MCP API key.
+
+| Result | Count |
+| --- | ---: |
+| PASS | 9 |
+| PASS_WITH_CAVEAT | 1 |
+| FAIL | 0 |
+
+Covered prompts included company profile, ownership, catalyst, financial risk, product/value-chain, disclosures, news-filter quality, theme-role distinction, authenticated watchlist flow, and Pro-only wiki access guard. The only caveat was a no-data news-filter case for `부산산업`; post-fix live resmoke confirmed no Redis `maxmemory` errors and no unrelated location-news results.
+
+Operational follow-up from the QA run:
+
+- Redis broker/cache headroom was raised for launch traffic.
+- A pre-launch duplicate NLP summary backlog was purged from the transient Celery `nlp` queue.
+- `scan_unsummarized_news` is now capped, deduplicated, and dispatches expiring child summary tasks so the queue cannot refill unboundedly.
+
 ## Runbook
 
 Dry-run fixed cases inside the backend container:
